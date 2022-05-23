@@ -7,6 +7,8 @@ __author__ = 'denishuang'
 
 class AppointPermissions(DjangoModelPermissions):
     def has_permission(self, request, view):
+        if not hasattr(view, 'action'):
+            return True
         if view.action == 'metadata':
             return True
         from .models import Appointment
