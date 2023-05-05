@@ -1,14 +1,17 @@
 # -*- coding:utf-8 -*-
-from rest_framework.authentication import   TokenAuthentication
+from rest_framework import exceptions, authentication
 __author__ = 'denishuang'
 
 from .models import Appointment
 
-class AppointAuthentication(TokenAuthentication):
+
+class AppointAuthentication(authentication.TokenAuthentication):
     model = Appointment
 
     def authenticate_credentials(self, key):
         from .helper import check_appoint_token
         context = check_appoint_token(key)
+        if not context:
+            raise exceptions.AuthenticationFailed('not found')
         user, policy = super(AppointAuthentication, self).authenticate_credentials(context['ak'])
         return user, policy
