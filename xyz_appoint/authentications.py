@@ -12,6 +12,6 @@ class AppointAuthentication(authentication.TokenAuthentication):
         from .helper import check_appoint_token
         context = check_appoint_token(key)
         if not context:
-            raise exceptions.AuthenticationFailed('not found')
+            return None
         user, policy = super(AppointAuthentication, self).authenticate_credentials(context['ak'])
         return user, policy
